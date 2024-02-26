@@ -53,21 +53,39 @@ class _CounterWidgetState extends State<CounterWidget> {
     });
   }
 
+  void _reset() {
+    setState(() {
+      _counter = 0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        FloatingActionButton(
-          onPressed: _decrement,
-          child: const Icon(Icons.remove),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            FloatingActionButton(
+              onPressed: _decrement,
+              child: const Icon(Icons.remove),
+            ),
+            const SizedBox(width: 20),
+            Text('$_counter', style: const TextStyle(fontSize: 24.0)),
+            const SizedBox(width: 20),
+            FloatingActionButton(
+              onPressed: _increment,
+              child: const Icon(Icons.add),
+            ),
+          ],
         ),
-        const SizedBox(width: 20),
-        Text('$_counter', style: const TextStyle(fontSize: 24.0)),
-        const SizedBox(width: 20),
+        const SizedBox(height: 20),
         FloatingActionButton(
-          onPressed: _increment,
-          child: const Icon(Icons.add),
+          onPressed: _reset,
+          tooltip: 'Reset',
+          child: const Icon(Icons.refresh),
         ),
       ],
     );
