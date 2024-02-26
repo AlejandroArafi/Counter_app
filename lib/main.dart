@@ -26,6 +26,15 @@ class MainApp extends StatelessWidget {
         body: const Center(
           child: CounterWidget(),
         ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'inicio',
+            ),
+            BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Buscar')
+          ],
+        ),
       ),
     );
   }
