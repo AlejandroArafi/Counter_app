@@ -62,7 +62,7 @@ class _MainAppState extends State<MainApp> {
           selectedItemColor: Colors.amber[800],
           onTap: _onTappedItem,
           showUnselectedLabels: true,
-          backgroundColor: const Color.fromARGB(255, 171, 230, 225),
+          backgroundColor: Color.fromARGB(255, 171, 230, 225),
         ),
       ),
     );
@@ -116,7 +116,7 @@ class _CounterWidgetState extends State<CounterWidget> {
             FloatingActionButton(
               onPressed: _decrement,
               child: const Icon(Icons.remove),
-              backgroundColor: const Color(0xFFF9F871),
+              backgroundColor: const Color.fromARGB(255, 242, 129, 240),
             ),
             const SizedBox(width: 20),
             Text('$_counter', style: const TextStyle(fontSize: 24.0)),
@@ -124,7 +124,7 @@ class _CounterWidgetState extends State<CounterWidget> {
             FloatingActionButton(
               onPressed: _increment,
               child: const Icon(Icons.add),
-              backgroundColor: const Color(0xFFF9F871),
+              backgroundColor: const Color.fromARGB(255, 242, 129, 240),
             ),
           ],
         ),
@@ -133,7 +133,7 @@ class _CounterWidgetState extends State<CounterWidget> {
           onPressed: _reset,
           tooltip: 'Reset',
           child: const Icon(Icons.refresh),
-          backgroundColor: const Color(0xFFF9F871),
+          backgroundColor: const Color.fromARGB(255, 242, 129, 240),
         ),
       ],
     );
