@@ -13,64 +13,72 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   int _selectedIndex = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor:
-              _selectedIndex == 1 ? Color(0xFF82F4EB) : Colors.purple[100],
-          title: Padding(
-            padding: EdgeInsetsDirectional.only(top: 28.0),
-            child: Text(
-              'Contador',
-              style: TextStyle(
-                fontSize: 31.0,
-                color: Colors.white,
-                shadows: [
-                  Shadow(
-                    color: Colors.black.withOpacity(0.5),
-                    offset: Offset(2.0, 2.0),
-                    blurRadius: 4.0,
-                  )
-                ],
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-        ),
-        body: const Center(
-          child: CounterWidget(),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'inicio',
-            ),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.color_lens), label: 'Cambiar color'),
-          ],
-          currentIndex: _selectedIndex,
-          onTap: _onTappedItem,
-        ),
-        backgroundColor:
-            _selectedIndex == 1 ? Color(0xFF82F4EB) : Colors.purple[100],
-      ),
-    );
-  }
+  int _incrementValue = 1;
+  int _decrementValue = 1;
 
   void _onTappedItem(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
+
+  void _updateValues(int increment, int decrement) {
+    setState(() {
+      _incrementValue = increment;
+      _decrementValue = decrement;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Contador App'),
+          backgroundColor:
+              _selectedIndex == 1 ? Color(0xFF82F4EB) : Colors.purple[100],
+        ),
+        body: _selectedIndex == 0
+            ? CounterWidget(
+                incrementValue: _incrementValue,
+                decrementValue: _decrementValue)
+            : SettingsWidget(
+                onValuesChanged: _updateValues,
+                incrementValue: _incrementValue,
+                decrementValue: _decrementValue,
+              ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Contador',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Configuración',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.amber[800],
+          onTap: _onTappedItem,
+          showUnselectedLabels: true,
+          backgroundColor:
+              _selectedIndex == 1 ? Color(0xFF82F4EB) : Colors.purple[100],
+        ),
+      ),
+    );
+  }
 }
 
 class CounterWidget extends StatefulWidget {
-  const CounterWidget({super.key});
+  final int incrementValue;
+  final int decrementValue;
+
+  const CounterWidget({
+    Key? key,
+    required this.incrementValue,
+    required this.decrementValue,
+  }) : super(key: key);
 
   @override
   _CounterWidgetState createState() => _CounterWidgetState();
@@ -81,13 +89,13 @@ class _CounterWidgetState extends State<CounterWidget> {
 
   void _increment() {
     setState(() {
-      _counter++;
+      _counter += widget.incrementValue;
     });
   }
 
   void _decrement() {
     setState(() {
-      _counter--;
+      _counter -= widget.decrementValue;
     });
   }
 
@@ -109,7 +117,7 @@ class _CounterWidgetState extends State<CounterWidget> {
             FloatingActionButton(
               onPressed: _decrement,
               child: const Icon(Icons.remove),
-              backgroundColor: Color(0xFFF9F871),
+              backgroundColor: const Color(0xFFF9F871),
             ),
             const SizedBox(width: 20),
             Text('$_counter', style: const TextStyle(fontSize: 24.0)),
@@ -117,7 +125,7 @@ class _CounterWidgetState extends State<CounterWidget> {
             FloatingActionButton(
               onPressed: _increment,
               child: const Icon(Icons.add),
-              backgroundColor: Color(0xFFF9F871),
+              backgroundColor: const Color(0xFFF9F871),
             ),
           ],
         ),
@@ -126,7 +134,68 @@ class _CounterWidgetState extends State<CounterWidget> {
           onPressed: _reset,
           tooltip: 'Reset',
           child: const Icon(Icons.refresh),
-          backgroundColor: Color(0xFFF9F871),
+          backgroundColor: const Color(0xFFF9F871),
+        ),
+      ],
+    );
+  }
+}
+
+class SettingsWidget extends StatefulWidget {
+  final Function(int, int) onValuesChanged;
+  final int incrementValue;
+  final int decrementValue;
+
+  const SettingsWidget({
+    Key? key,
+    required this.onValuesChanged,
+    required this.incrementValue,
+    required this.decrementValue,
+  }) : super(key: key);
+
+  @override
+  _SettingsWidgetState createState() => _SettingsWidgetState();
+}
+
+class _SettingsWidgetState extends State<SettingsWidget> {
+  late int _incrementValue;
+  late int _decrementValue;
+
+  @override
+  void initState() {
+    super.initState();
+    _incrementValue = widget.incrementValue;
+    _decrementValue = widget.decrementValue;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text('Incremento: $_incrementValue'),
+        Slider(
+          value: _incrementValue.toDouble(),
+          min: 1,
+          max: 10,
+          onChanged: (double value) {
+            setState(() {
+              _incrementValue = value.round();
+            });
+            widget.onValuesChanged(_incrementValue, _decrementValue);
+          },
+        ),
+        Text('Decremento: $_decrementValue'),
+        Slider(
+          value: _decrementValue.toDouble(),
+          min: 1,
+          max: 10,
+          onChanged: (double value) {
+            setState(() {
+              _decrementValue = value.round();
+            });
+            widget.onValuesChanged(_incrementValue, _decrementValue);
+          },
         ),
       ],
     );
