@@ -35,7 +35,7 @@ class _MainAppState extends State<MainApp> {
       home: Scaffold(
         appBar: AppBar(
             title: const Text('Contador App'),
-            backgroundColor: const Color(0xFF82F4EB)),
+            backgroundColor: Color.fromARGB(255, 171, 230, 225)),
         body: Center(
           child: _selectedIndex == 0
               ? CounterWidget(
@@ -62,7 +62,7 @@ class _MainAppState extends State<MainApp> {
           selectedItemColor: Colors.amber[800],
           onTap: _onTappedItem,
           showUnselectedLabels: true,
-          backgroundColor: const Color(0xFF82F4EB),
+          backgroundColor: const Color.fromARGB(255, 171, 230, 225),
         ),
       ),
     );
