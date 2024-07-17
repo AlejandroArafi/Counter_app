@@ -34,19 +34,19 @@ class _MainAppState extends State<MainApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Contador App'),
-          backgroundColor:
-              _selectedIndex == 1 ? Color(0xFF82F4EB) : Colors.purple[100],
+            title: const Text('Contador App'),
+            backgroundColor: const Color(0xFF82F4EB)),
+        body: Center(
+          child: _selectedIndex == 0
+              ? CounterWidget(
+                  incrementValue: _incrementValue,
+                  decrementValue: _decrementValue)
+              : SettingsWidget(
+                  onValuesChanged: _updateValues,
+                  incrementValue: _incrementValue,
+                  decrementValue: _decrementValue,
+                ),
         ),
-        body: _selectedIndex == 0
-            ? CounterWidget(
-                incrementValue: _incrementValue,
-                decrementValue: _decrementValue)
-            : SettingsWidget(
-                onValuesChanged: _updateValues,
-                incrementValue: _incrementValue,
-                decrementValue: _decrementValue,
-              ),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
@@ -62,8 +62,7 @@ class _MainAppState extends State<MainApp> {
           selectedItemColor: Colors.amber[800],
           onTap: _onTappedItem,
           showUnselectedLabels: true,
-          backgroundColor:
-              _selectedIndex == 1 ? Color(0xFF82F4EB) : Colors.purple[100],
+          backgroundColor: const Color(0xFF82F4EB),
         ),
       ),
     );
